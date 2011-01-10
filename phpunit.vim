@@ -117,10 +117,10 @@ function! PhpUnitSwitchFile()
     let f = substitute(f,'^'.g:phpunit_testroot.'/','','')
     " remove 'Test.' from filename
     let f = substitute(f,'Test\.','.','')
-    let cmd = 'bo '
+    let cmd = 'to '
   else
     let f = g:phpunit_testroot . "/" . expand('%:r') . "Test.php"
-    let cmd = 'to '
+    let cmd = 'bo '
   endif
   " is there window with complent file open?
   let win = bufwinnr(f)
