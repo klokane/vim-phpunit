@@ -1,0 +1,36 @@
+Vim Plugin PHPUnit
+
+this plugin allows you run tests directly from vim
+
+INSTALL
+-------
+
+just copy 'phpunit.vim' to your '$HOME/.vim/plugins' directry
+
+
+USAGE
+------
+
+There are defined three commands
+
+:PhpUnit [path]
+
+run phpunit with path. Path is not manadatory. If Path is not defined it vim-phpunit use <g:phpunit_tests> variable
+
+:PhpUnitSwitchFile
+
+Open testfile for current file. Name of testfile is taken from curent path in following way:
+<g:phpunit_testroot>/<current path>/<file name>Test.php
+and vice versa for testing file (if you are on test file, it will open source file complementary to testfile)
+
+version 0.1 doesn't care about path existence - it's your responsibility
+(maybe in next version)
+
+:PhpUnitFile
+
+run phpunit for current file. There is heuristic like :PhpUnitSwitchFile
+eg. 
+[file] dir/file.php => [test] <g:phpunit_testroot>/dir/fileTest
+[file] <g:phpunit_testroot>/dir/fileTest => [test] <g:phpunit_testroot>/dir/fileTest
+
+
