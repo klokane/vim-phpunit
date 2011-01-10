@@ -13,7 +13,7 @@
 " * PhpUnitSwitchFile - create skeleton if file not exists (configurable)
 " * PhpUnitSwitchFile - allow configure way to open complement file
 " * PhpUnitFile - run last test if cursor is in output buffer
-" * output - allow jump throw Fail assert and Errors
+" * output - allow navigate throught Fail assert and Errors
 " * output - while processing tests
 "
 " IDEA: (maybe in deep future)
@@ -158,6 +158,7 @@ function! s:PhpUnitOpenBuffer(content)
   setlocal buftype=nofile modifiable bufhidden=hide
   silent put=a:content
   "efm=%E%\\d%\\+)\ %m,%CFailed%m,%Z%f:%l,%-G
+  " FIXME: It is better use match(), or :syntax
   call matchadd("PhpUnitFail","^FAILURES.*$")
   call matchadd("PhpUnitOK","^OK .*$")
   call matchadd("PhpUnitAssertFail","^Failed asserting.*$")
