@@ -4,7 +4,7 @@
 " Version: 0.1
 "
 " default mapping:
-" nnoremap <Leader>t :PhpUnit<Enter>
+" nnoremap <Leader>tt :PhpUnit<Enter>
 " nnoremap <Leader>tf :PhpUnitFile<Enter>
 " nnoremap <Leader>ts :PhpUnitSwitchFile<Enter>
 " 
@@ -77,10 +77,13 @@ endfunction
 "
 function! PhpUnitRun(path)
   let tests_path = strlen(a:path) ? a:path : g:phpunit_tests
+  redraw
   echohl Title
-  echo "* Running PHP Unit test(s) [" . tests_path . "] *"
+  echomsg "* Running PHP Unit test(s) [" . tests_path . "] *"
   echohl None
-  echo ""
+  redraw
+  echomsg "* Done PHP Unit test(s) [" . tests_path . "] *"
+  echohl None
   let phpunit_out = s:PhpUnitSystem(tests_path)
   silent call <SID>PhpUnitOpenBuffer(phpunit_out)
 endfunction
@@ -170,7 +173,7 @@ command! PhpUnitFile call PhpUnitRunEditedFile()
 command! PhpUnitSwitchFile call PhpUnitSwitchFile()
 
 if !exists('g:phpunit_key_map') || !g:phpunit_key_map
-    nnoremap <Leader>t :PhpUnit<Enter>
+    nnoremap <Leader>tt :PhpUnit<Enter>
     nnoremap <Leader>tf :PhpUnitFile<Enter>
     nnoremap <Leader>ts :PhpUnitSwitchFile<Enter>
 endif
