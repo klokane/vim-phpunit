@@ -1,7 +1,7 @@
 " Author:  KLoK <klok at klok.cz>
 " License: The MIT License
 " URL:     https://github.com/klokane/vim-phpunit 
-" Version: 0.1
+" Version: 0.2
 "
 " default mapping:
 " nnoremap <Leader>tt :PhpUnit<Enter>
@@ -43,12 +43,17 @@ if !exists('g:phpunit_tests')
   let g:phpunit_tests = g:phpunit_testroot
 endif
 
+if !exists('g:phpunit_filter')
+  let g:phpunit_filter = "|awk '/^[0-9]+) .*$/{f=1};/^$/{f=0;if(e){print e; e=0}};/[^:]+:[0-9]+$/{e=$0;next};{print}'"
+endif
+
 
 "
 " flags to run phpunit
 "
 if !exists('g:phpunit_params')
-  let g:phpunit_params = '--stop-on-failure'
+  " let g:phpunit_params = '--stop-on-failure'
+  let g:phpunit_params = ''
 endif
 
 if !exists('g:phpunit_highlights')
@@ -66,7 +71,7 @@ endif
 "  args default is <phpunit_tests>
 "
 function! s:PhpUnitSystem(args)
-  return system(g:phpunit_bin . ' ' . g:phpunit_params . ' ' . a:args)
+  return system(g:phpunit_bin . ' ' . g:phpunit_params . ' ' . a:args . ' ' . g:phpunit_filter)
 endfunction
 
 "
@@ -160,12 +165,15 @@ function! s:PhpUnitOpenBuffer(content)
 
   setlocal buftype=nofile modifiable bufhidden=hide
   silent put=a:content
-  "efm=%E%\\d%\\+)\ %m,%CFailed%m,%Z%f:%l,%-G
   " FIXME: It is better use match(), or :syntax
   call matchadd("PhpUnitFail","^FAILURES.*$")
   call matchadd("PhpUnitOK","^OK .*$")
   call matchadd("PhpUnitAssertFail","^Failed asserting.*$")
   setlocal nomodifiable
+  " send result to quickfix
+  setlocal efm=%E%n)\ %.%#,%Z%f:%l,%C%m
+  " cgetb 
+  cb 
 endfunction
 
 command! -nargs=? -complete=file PhpUnit call PhpUnitRun(<q-args>)
